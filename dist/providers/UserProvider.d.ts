@@ -1,10 +1,6 @@
 import React from 'react';
-interface UserContextData {
-    id: number;
-    name: string;
-    email: string;
-    role: string;
-}
+import { User } from '../types';
+declare const UserContext: React.Context<User>;
 declare const UserProvider: React.FC;
-declare const useCurrentUser: () => UserContextData;
-export { UserProvider, useCurrentUser };
+declare const useCurrentUser: () => User;
+export { UserContext, UserProvider, useCurrentUser };
