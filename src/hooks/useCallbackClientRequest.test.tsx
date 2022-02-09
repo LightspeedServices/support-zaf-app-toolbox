@@ -5,6 +5,7 @@ import {mount, ReactWrapper} from 'enzyme'
 import {ZAFClientContextProvider} from '../providers/ZAFClientContext'
 import {CallbackRequestResponse, Client, FeedbackStatus} from '../types'
 import useCallbackClientRequest from './useCallbackClientRequest'
+import flushPromises from "../test/flushPromises";
 
 describe('useCallbackClientRequest', () => {
   let result: CallbackRequestResponse<any>
@@ -39,6 +40,41 @@ describe('useCallbackClientRequest', () => {
     expect(client.request).not.toHaveBeenCalled()
     expect(result.data).toBeNull()
     expect(result.feedback).toBeNull()
+    expect(result.error).toBeNull()
+
+    act(() => {
+      tree.unmount()
+    })
+  })
+
+  it('should send options on client.request', async () => {
+    // @ts-ignore
+    const client: Client = {
+      request: jest.fn(),
+    }
+    let tree: ReactWrapper
+
+    act(() => {
+      tree = mount(
+        <ZAFClientContextProvider value={client}>
+          <Wrapper options={{type: 'POST', data: {id: 123}}} />
+        </ZAFClientContextProvider>,
+      )
+
+      result.performRequest()
+    })
+
+    await flushPromises()
+
+    expect(client.request).toHaveBeenCalledWith(
+      expect.objectContaining({
+        url: '/fake-url',
+        type: 'POST',
+        data: {id: 123},
+      }),
+    )
+    expect(result.data).not.toBeNull()
+    expect(result.feedback).toEqual({status: FeedbackStatus.success})
     expect(result.error).toBeNull()
 
     act(() => {
