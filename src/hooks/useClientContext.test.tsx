@@ -5,7 +5,6 @@ import {mount, ReactWrapper} from 'enzyme'
 import {ZAFClientContextProvider} from '../providers/ZAFClientContext'
 import {Client, ClientContextResponse, Context, FeedbackStatus} from '../types'
 import useClientContext from './useClientContext'
-import flushPromises from '../test/flushPromises'
 
 describe('useClientContext', () => {
   let result: ClientContextResponse
@@ -31,15 +30,13 @@ describe('useClientContext', () => {
     }
     let tree: ReactWrapper
 
-    act(() => {
+    await act(async () => {
       tree = mount(
         <ZAFClientContextProvider value={client}>
           <Wrapper />
         </ZAFClientContextProvider>,
       )
     })
-
-    await flushPromises()
 
     expect(client.context).toBeCalled()
     expect(result.data).toEqual({location: 'ticket_sidebar'})

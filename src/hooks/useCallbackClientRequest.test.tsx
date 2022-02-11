@@ -5,7 +5,6 @@ import {mount, ReactWrapper} from 'enzyme'
 import {ZAFClientContextProvider} from '../providers/ZAFClientContext'
 import {CallbackRequestResponse, Client, FeedbackStatus} from '../types'
 import useCallbackClientRequest from './useCallbackClientRequest'
-import flushPromises from "../test/flushPromises";
 
 describe('useCallbackClientRequest', () => {
   let result: CallbackRequestResponse<any>
@@ -54,17 +53,15 @@ describe('useCallbackClientRequest', () => {
     }
     let tree: ReactWrapper
 
-    act(() => {
+    await act(async () => {
       tree = mount(
         <ZAFClientContextProvider value={client}>
           <Wrapper options={{type: 'POST', data: {id: 123}}} />
         </ZAFClientContextProvider>,
       )
 
-      result.performRequest()
+      await result.performRequest()
     })
-
-    await flushPromises()
 
     expect(client.request).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -161,14 +158,14 @@ describe('useCallbackClientRequest', () => {
     }
     let tree: ReactWrapper
 
-    act(() => {
+    await act(async () => {
       tree = mount(
         <ZAFClientContextProvider value={client}>
           <Wrapper deps={[true]} />
         </ZAFClientContextProvider>,
       )
 
-      result.performRequest()
+      await result.performRequest()
     })
 
     expect(client.request).toHaveBeenCalled()

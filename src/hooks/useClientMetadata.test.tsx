@@ -9,7 +9,6 @@ import {
   FeedbackStatus,
   Metadata,
 } from '../types'
-import flushPromises from '../test/flushPromises'
 import useClientMetadata from './useClientMetadata'
 
 describe('useClientMetadata', () => {
@@ -36,15 +35,13 @@ describe('useClientMetadata', () => {
     }
     let tree: ReactWrapper
 
-    act(() => {
+    await act(async () => {
       tree = mount(
         <ZAFClientContextProvider value={client}>
           <Wrapper />
         </ZAFClientContextProvider>,
       )
     })
-
-    await flushPromises()
 
     expect(client.metadata).toBeCalled()
     expect(result.data).toEqual({name: 'TestMetadata'})
