@@ -87,6 +87,7 @@ export interface Ticket {
   id: number
   subject: string
   description: string
+  status: string
   type: string
   priority: string
   created_at: string
