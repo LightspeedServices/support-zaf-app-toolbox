@@ -70,6 +70,7 @@ export interface User {
   updatedAt: string
   deletedAt: string | null
   locale: string
+  slackId?: string
 }
 
 export interface Group {
