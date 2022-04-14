@@ -8,8 +8,16 @@ const UserContext = createContext<User>({} as User)
 const UserProvider: React.FC = ({children}) => {
   let {data} = useClientGet<User>('currentUser')
 
+  const {data: slackId} = useClientGet<string>(
+    'currentUser.customField:slack_id',
+  )
+
   if (!data) {
     data = {} as User
+  }
+
+  if (slackId) {
+    data.slackId = slackId
   }
 
   return <UserContext.Provider value={data}>{children}</UserContext.Provider>
