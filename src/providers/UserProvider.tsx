@@ -14,9 +14,7 @@ const UserProvider: React.FC = ({children}) => {
 
   if (!data) {
     data = {} as User
-  }
-
-  if (slackId) {
+  } else if (slackId) {
     data.slackId = slackId
   }
 
