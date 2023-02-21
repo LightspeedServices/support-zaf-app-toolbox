@@ -72,6 +72,9 @@ export interface Organization {
     id: number;
     externalId: string;
     name: string;
+    organizationFields: {
+        [key: string]: string | number | boolean | null;
+    };
 }
 export declare enum FeedbackStatus {
     success = "success",
