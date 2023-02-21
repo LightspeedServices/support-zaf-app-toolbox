@@ -99,6 +99,7 @@ export interface Organization {
   id: number
   externalId: string
   name: string
+  organizationFields: {[key: string]: string | number | boolean | null}
 }
 
 export enum FeedbackStatus {
